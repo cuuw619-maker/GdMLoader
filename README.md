@@ -1,30 +1,88 @@
 <div align="center">
 
-<img src="./MLLogo.png" width="160" alt="GdMLoader logo">
+<img src="./assets/local/branding/MLLogo.png" width="160" alt="GdMLoader">
 
 # GdMLoader
 
-**Mod loader for the Geometry Dash Web version.**
+**Web mod loader for Geometry Dash Web.**
 
-[Open GdMLoader](https://cuuw619-maker.github.io/GdMLoader/) · [GitHub Repository](https://github.com/cuuw619-maker/GdMLoader)
+[Open GdMLoader](https://cuuw619-maker.github.io/GdMLoader/) · [GitHub](https://github.com/cuuw619-maker/GdMLoader)
 
 </div>
 
-## Features
+## What it is
 
-- Compact loader: `index.html → loader.js → mods → game.js`
-- JavaScript mods from `mods.json`
-- Menu registration and hooks
-- `GDMLHook()` and event API
-- Existing Geometry Dash Web game bundle
-- User-activation startup for browser AudioContext policy
-- `bigFont` fallback assets
+GdMLoader is a browser-side mod loader built around the existing Geometry Dash Web game. The loader UI is integrated into the game page instead of being a separate menu or demo page.
 
-## Mod example
+The project is structured so that the game runtime, loader, configuration, local assets and future mods are separated.
+
+## Project structure
+
+```text
+GdMLoader/
+├── index.html
+├── src/
+│   ├── game.js       # game bundle
+│   ├── loader.js     # loader/runtime
+│   ├── ui.js         # in-game loader interface
+│   └── style.css     # interface/layout styles
+├── config/
+│   ├── asset-map.json
+│   └── mods.json
+├── mods/             # future JavaScript mods
+└── assets/
+    └── local/
+        ├── branding/
+        ├── fonts/
+        ├── game/
+        └── ui/
+```
+
+## In-game loader
+
+After Geometry Dash starts, the GdMLoader control is available directly over the game. It opens the loader without leaving the game.
+
+The interface currently contains:
+
+- Mods — loaded mod count and GitHub access.
+- Levels — level IDs, names and search.
+- Settings — persistent loader preferences.
+- RobTop Games attribution.
+- GdMLoader branding using the project's local logo.
+
+The panel can also be opened with **F6**.
+
+## Levels
+
+The level browser reads level data from `config/asset-map.json`. Selecting a level stores it in `GDML.selectedLevel` and emits:
+
+```js
+api.on("levelSelect", level => {
+  console.log(level.id, level.name, level.file);
+});
+```
+
+The browser is an interface layer; actual game-level loading remains handled by the game runtime.
+
+## Mods
+
+Enabled JavaScript mods are listed in `config/mods.json`.
+
+Example:
+
+```json
+[
+  "example.js"
+]
+```
+
+A mod can use the GdMLoader API:
 
 ```js
 export default api => {
-  api.on("gameReady", () => console.log("GdMLoader: game ready"));
+  api.on("gameReady", () => {
+    console.log("Game is ready");
+  });
 
   api.menu.register("myMenu", {
     onOpen: () => console.log("opened"),
@@ -33,10 +91,17 @@ export default api => {
 };
 ```
 
-Add the file to `mods/` and its filename to `mods.json`.
+## Asset system
 
-## Web version
+External Geometry Dash Web assets are resolved through `config/asset-map.json`.
 
-**Launch:** https://cuuw619-maker.github.io/GdMLoader/
+GdMLoader's own files are kept under `assets/local/`, preventing the repository root from becoming a flat asset dump.
 
-**Source:** https://github.com/cuuw619-maker/GdMLoader
+## Attribution
+
+Geometry Dash and its original game assets are property of **RobTop Games**. GdMLoader is an independent third-party project and is not presented as an official RobTop Games product.
+
+## Links
+
+- Web: https://cuuw619-maker.github.io/GdMLoader/
+- Repository: https://github.com/cuuw619-maker/GdMLoader
