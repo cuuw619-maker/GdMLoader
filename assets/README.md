@@ -1,5 +1,10 @@
-# Assets
+# Local assets
 
-The game bundle requests Geometry Dash resources from `assets/<filename>`. `loader.js` transparently resolves these legacy paths through `asset-map.json`, which points to the matching Web Dashers asset folders.
+Local files used by GdMLoader itself live under `assets/local/`.
 
-Keep this directory as the compatibility root. New local resources can be added here when a mod needs them.
+- `assets/local/branding/` — loader and attribution images.
+- `assets/local/fonts/` — local font fallbacks.
+- `assets/local/game/` — local game fallback assets.
+- `assets/local/ui/` — UI assets.
+
+Game resources from Web Dashers are resolved through `config/asset-map.json`; they are not duplicated here.
