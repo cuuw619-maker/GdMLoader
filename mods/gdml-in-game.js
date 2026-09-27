@@ -10,7 +10,7 @@ export default function(GDML){
     if(!game||!game.scene)return;
     const boot=game.scene.getScene("BootScene");
     if(!boot)return;
-    const W=game.config.width||1137,H=game.config.height||640;
+    const W=game.config.width||1137,H=game.config.height||640;\n    const logoPath="./assets/local/branding/MLLogo.png";
     let panel=null,button=null,busy=false;
 
     const makeText=(x,y,s,size)=>{
@@ -77,7 +77,7 @@ export default function(GDML){
       GDML.emit("menuOpen","gdml-levels");
     };
 
-    button=makeButton(W-105,H-38,190,48,"GdMLoader",open);
-    button.g.setDepth(9999);button.t.setDepth(10000);
+    button=makeButton(W/2,H-70,210,48,"GdMLoader",open);
+    button.g.setDepth(9999);button.t.setDepth(10000);\n    boot.input.keyboard.on("keydown-F6",()=>{if(boot.scene.isActive("BootScene"))open()});
   });
 }
