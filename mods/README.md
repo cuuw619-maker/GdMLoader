@@ -1,32 +1,55 @@
-# Web mods
+# GdMLoader
 
-Add a JavaScript module to this folder and put its filename in mods.json.
+Web mod loader for the Geometry Dash Web version.
+
+## Project structure
+
+- `index.html` — entry point.
+- `src/loader.js` — loader/runtime and asset routing.
+- `src/game.js` — bundled game.
+- `src/ui.js` — GdMLoader interface, settings, GitHub and level browser.
+- `src/style.css` — loader/game layout and UI styles.
+- `config/asset-map.json` — external and local asset map.
+- `config/mods.json` — enabled mods.
+- `mods/` — JavaScript mods.
+- `assets/local/` — local branding/game fallback assets.
+
+## Loader UI
+
+After the game starts, the GdMLoader button opens a panel with:
+
+- installed mod count;
+- GitHub button;
+- level browser with search;
+- settings;
+- RobTop Games attribution;
+- persistent UI preferences.
+
+F6 toggles the loader panel.
+
+## Mod API
+
+The loader exposes `window.GDML`.
 
 ```js
 export default api => {
-  api.on("gameReady", () => console.log("mod loaded"));
-  api.on("menuOpen", name => console.log("open:", name));
+  api.on("gameReady", () => {
+    console.log("GdMLoader: game ready");
+  });
+
+  api.on("levelSelect", level => {
+    console.log("Selected level:", level.id, level.name);
+  });
 };
 ```
 
-## Menu hooks
-
-The loader exposes a small menu layer so mods do not have to depend on internal bundle names:
+Menu registration is also available:
 
 ```js
 api.menu.register("settings", {
   onOpen: () => console.log("settings opened"),
   onClose: () => console.log("settings closed")
 });
-
-api.on("menuOpen", name => {
-  if (name === "settings") console.log("settings hook");
-});
-
-api.menu.open("settings");
-api.menu.close("settings");
 ```
 
-`api.menu.list()` returns registered menu names. `api.menu.get(name)` returns a registered menu API.
-
-Mods are loaded before `game.js`, so hooks can be registered before the game starts.
+Enabled mods are listed in `config/mods.json` by filename.
