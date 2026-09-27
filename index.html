@@ -1,23 +1,12 @@
-<!DOCTYPE html>
-<!-- saved from url=(0040)https://geometrydash.com/game/index.html -->
-<html lang="en" style="height: 100%;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Geometry Dash - Play Level 1</title>
-    <style>
-        * { margin: 0; padding: 0; }
-        body { overflow: hidden; }
-        canvas { display: block; margin: 0 auto; }
-    </style>
-  <script type="module" crossorigin="" src="./index-game.js.завантаження"></script>
-  <script>
-    // ResizeObserver catches iframe size changes that window.resize misses
-    // (e.g. parent window maximize, snap, title bar drag)
-    new ResizeObserver(() => {
-      window.dispatchEvent(new Event('resize'));
-    }).observe(document.documentElement);
-  </script>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#111">
+<link rel="icon" href="./MLLogo.png">
+<link rel="stylesheet" href="./style.css">
+<title>Geometry Dash Web</title>
 </head>
-<body style="height: 100%;">
-
-<canvas width="1138" height="640" style="width: 940px; height: 528.647px; margin-left: 0px; margin-top: 0px;"></canvas></body></html>
+<body><main id="game"></main><script type="module" src="./loader.js"></script></body>
+</html>
