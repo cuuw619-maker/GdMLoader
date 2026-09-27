@@ -10,7 +10,7 @@ export default function(GDML){
     if(!game||!game.scene)return;
     const boot=game.scene.getScene("BootScene");
     if(!boot)return;
-    const W=game.config.width||1137,H=game.config.height||640;\n    const logoPath="./assets/local/branding/MLLogo.png";
+    const W=game.config.width||1137,H=game.config.height||640;\n    const logoPath="./assets/local/branding/MLLogo.png";\n    const logoImage=new Image();logoImage.onload=()=>{try{game.textures.addImage("gdmlLogo",logoImage)}catch(e){console.warn("[GdMLoader] logo",e)}};logoImage.src=logoPath;
     let panel=null,button=null,busy=false;
 
     const makeText=(x,y,s,size)=>{
@@ -64,7 +64,7 @@ export default function(GDML){
       if(button){button.g.setVisible(false);button.t.setVisible(false);}
       panel=boot.add.container(0,0).setDepth(10000);
       const bg=boot.add.graphics();bg.fillStyle(0x05070d,0.97);bg.fillRect(0,0,W,H);panel.add(bg);
-      const title=makeText(W/2,43,"GdMLoader",34);panel.add(title);
+      const title=makeText(W/2,43,"GdMLoader",34);panel.add(title);\n      if(game.textures.exists("gdmlLogo"))panel.add(boot.add.image(W/2-125,43,"gdmlLogo").setDisplaySize(42,42).setOrigin(.5).setDepth(10001));
       const sub=makeText(W/2,78,"LEVEL SELECT",14);sub.setAlpha(.65);panel.add(sub);
       const closeB=makeButton(W-55,45,70,42,"×",close);panel.add(closeB.g);panel.add(closeB.t);
       const ids=Object.keys(GDML.assets&&GDML.assets.files||{}).filter(x=>/^\d+\.txt$/i.test(x)).map(x=>+x.slice(0,-4)).filter(Number.isFinite).sort((a,b)=>a-b);
@@ -78,6 +78,6 @@ export default function(GDML){
     };
 
     button=makeButton(W/2,H-70,210,48,"GdMLoader",open);
-    button.g.setDepth(9999);button.t.setDepth(10000);\n    boot.input.keyboard.on("keydown-F6",()=>{if(boot.scene.isActive("BootScene"))open()});
+    button.g.setDepth(9999);button.t.setDepth(10000);\n    if(game.textures.exists("gdmlLogo")){const bi=boot.add.image(W/2-125,H-70,"gdmlLogo").setDisplaySize(34,34).setDepth(10000);button.logo=bi;}\n    boot.input.keyboard.on("keydown-F6",()=>{if(boot.scene.isActive("BootScene"))open()});
   });
 }
