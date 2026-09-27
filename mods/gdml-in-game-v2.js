@@ -8,8 +8,9 @@ export default function(GDML){
   GDML.on("gameReady",()=>{
     const game=window.Phaser&&window.Phaser.GAMES&&window.Phaser.GAMES[0];
     if(!game||!game.scene)return;
-    const boot=game.scene.getScene("BootScene");
-    if(!boot)return;
+    const active=game.scene.getScenes(true);
+    const boot=active&&active[0];
+    if(!boot||!boot.add||!boot.input)return;
     const W=game.config.width||1137,H=game.config.height||640;
     const logoPath="./assets/local/branding/MLLogo.png";
     const logoImage=new Image();logoImage.onload=()=>{try{game.textures.addImage("gdmlLogo",logoImage)}catch(e){console.warn("[GdMLoader] logo",e)}};logoImage.src=logoPath;
@@ -22,7 +23,7 @@ export default function(GDML){
       const g=boot.add.graphics();
       g.fillStyle(0x111827,.94);g.fillRoundedRect(x-w/2,y-h/2,w,h,10);
       g.lineStyle(2,0xffffff,.18);g.strokeRoundedRect(x-w/2,y-h/2,w,h,10);
-      g.setInteractive(new Phaser.Geom.Rectangle(x-w/2,y-h/2,w,h),Phaser.Geom.Rectangle.Contains);
+      g.setInteractive(new window.Phaser.Geom.Rectangle(x-w/2,y-h/2,w,h),window.Phaser.Geom.Rectangle.Contains);
       g.on("pointerover",()=>g.setAlpha(.82)).on("pointerout",()=>g.setAlpha(1)).on("pointerup",fn);
       const t=makeText(x,y,label,17);
       return {g:g,t:t,destroy:()=>{g.destroy();t.destroy()}};
@@ -53,7 +54,7 @@ export default function(GDML){
         localStorage.setItem("gdml.selectedLevel",String(id));
         close();
         GDML.emit("levelSelect",GDML.selectedLevel);
-        boot.scene.start("GameScene");
+        const scenes=game.scene.getScenes(false)||[]; const target=scenes.find(s=>s!==boot&&s.scene&&s.scene.key); if(target)boot.scene.start(target.scene.key);
       }catch(e){
         console.error("[GdMLoader] level load failed",e);
         busy=false;
@@ -83,6 +84,6 @@ export default function(GDML){
     button=makeButton(W/2,H-70,210,48,"GdMLoader",open);
     button.g.setDepth(9999);button.t.setDepth(10000);
     if(game.textures.exists("gdmlLogo")){const bi=boot.add.image(W/2-125,H-70,"gdmlLogo").setDisplaySize(34,34).setDepth(10000);button.logo=bi;}
-    boot.input.keyboard.on("keydown-F6",()=>{if(boot.scene.isActive("BootScene"))open()});
+    boot.input.keyboard.on("keydown-F6",()=>{if(boot.scene&&boot.scene.isActive(boot.scene.key))open()});
   });
 }
