@@ -44,3 +44,5 @@ body{position:fixed;inset:0;width:100vw;height:100dvh;display:block;overscroll-b
 .gdml-toggle input{width:20px;height:20px}
 .gdml-reduced .gdml-menu,.gdml-reduced .gdml-backdrop{transition:none}
 @media(max-width:620px){.gdml-menu{width:calc(100vw - 16px);height:calc(100dvh - 16px);border-radius:14px}.gdml-levels{grid-template-columns:1fr}.gdml-header{height:70px}.gdml-brand img{width:44px;height:44px}.gdml-brand strong{font-size:19px}}
+
+.gdml-position-values{margin:10px 0 14px;padding:12px;border-radius:10px;background:rgba(0,0,0,.2);font-family:monospace;font-size:15px;text-align:center}.gdml-position-values b{color:#fff}.gdml-position-active #game{cursor:move}
